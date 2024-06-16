@@ -1,0 +1,33 @@
+name: Build Vite Project
+
+on:
+  push:
+    branches:
+      - master  # 当推送到 main 分支时触发
+  # 手动触发部署
+  workflow_dispatch:
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v2
+
+      - name: Set up Node.js
+        uses: actions/setup-node@v2
+        with:
+          node-version: '20'
+
+      - name: Install dependencies
+        run: npm install
+
+      - name: Build project
+        run: npm run build
+
+      - name: Upload build artifacts
+        uses: actions/upload-artifact@v2
+        with:
+          name: build-artifacts
+          path: dist  # 根据 Vite 的默认输出目录
+
